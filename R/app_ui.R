@@ -9,8 +9,28 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("temperatureprofondeurleman")
+    page_navbar(
+      title = "Température du lac Léman",
+      nav_panel(title = "Hermance",
+                p("First page content."),
+                tabsetPanel(
+                  tabPanel("Week-end",
+                           fluidRow(column(6,
+                                           h2("Samedi"),
+                                           mod_print_dt_table_ui("samedi_court"),
+                                           mod_print_dt_table_ui("samedi_long")),
+                                    column(6,
+                                           h2("Dimanche"),
+                                           mod_print_dt_table_ui("dimanche_court"),
+                                           mod_print_dt_table_ui("dimanche_long")))
+                  ),
+                  tabPanel("7 jours",
+                           h2("Semaine"),
+                           mod_print_dt_table_ui("semaine"))
+                )),
+      nav_panel(title = "Autres", p("Second page content.")),
+      nav_panel(title = "Lisez-moi",
+                mod_apropos_ui("apropos1"))#,
     )
   )
 }
