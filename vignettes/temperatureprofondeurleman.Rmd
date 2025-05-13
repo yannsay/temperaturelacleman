@@ -17,57 +17,49 @@ knitr::opts_chunk$set(
 ```{r setup}
 # library(temperatureprofondeurleman)
 devtools::load_all()
-library(jsonlite)
+# library(jsonlite)
 library(dplyr)
 library(purrr)
 library(stringr)
 library(gt)
 library(lubridate)
-library(httr)
+library(httr2)
 inital_update <- "2024-06-14"
 update_day <- today(tzone = "CET")
 ```
 
 ```{r}
-#call to get data
-get_data <- function(start_day, 
-                     latitude_call = "46.303696", 
-                     longitude_call = "6.239853") {
-  end_day <- as.Date(start_day) + 6
-  start_day_call <- str_replace_all(start_day, "-", "") %>% paste0("0000")
-  end_day_call <- str_replace_all(end_day, "-", "") %>% paste0("2200")
-  url_call <- paste0("https://alplakes-api.eawag.ch/simulations/depthtime/delft3d-flow/geneva/",
-                     start_day_call,
-                     "/",
-                     end_day_call,
-                     "/",
-                     latitude_call,
-                     "/",
-                     longitude_call)
-  response <- try(GET(url_call, accept("application/json")),silent = T)
-
-  if(class(response) == "try-error") {
-    json_data <- json_call_14062024
-    update_day <- inital_update
-  } else if(status_code(response) == 200){
-    json_data <-  content(response, "text") |> jsonlite::fromJSON()
-  } else if(status_code(response) != 200) {
-    json_data <- json_call_14062024
-    update_day <- inital_update
-  }
-
-  return(json_data)
-}
-json_data <- get_data(start_day = "2024-06-10")
-
-
-# start_day <- floor_date(today(tzone = "CET"), "weeks")
-# end_day <- ceiling_date(today(tzone = "CET"), "weeks") -1
-
-start_day <- "2024-06-10"
-end_day <- "2024-06-16"
-
-
+# #call to get data
+# get_data <- function(start_day, 
+#                      end_day,
+#                      latitude_call = "46.303696", 
+#                      longitude_call = "6.239853") {
+#   start_day_call <- str_replace_all(start_day, "-", "") %>% paste0("0100")
+#   end_day_call <- str_replace_all(end_day, "-", "") %>% paste0("2200")
+#   url_call <- paste0("https://alplakes-api.eawag.ch/simulations/depthtime/delft3d-flow/geneva/",
+#                      start_day_call,
+#                      "/",
+#                      end_day_call,
+#                      "/",
+#                      latitude_call,
+#                      "/",
+#                      longitude_call)
+#   response <- try(GET(url_call, accept("application/json")),silent = T)
+# 
+#   if(class(response) == "try-error") {
+#     json_data <- json_call_14062024
+#     update_day <- inital_update
+#   } else if(status_code(response) == 200){
+#     json_data <-  content(response, "text") |> jsonlite::fromJSON()
+#   } else if(status_code(response) != 200) {
+#     json_data <- json_call_14062024
+#     update_day <- inital_update
+#   }
+# 
+#   return(json_data)
+# }
+request_data <- get_data_from_alplakes(start_day = "2024-06-10", end_day = "2024-06-16")
+json_data <- request_data |>  convert_json_to_list()
 
 
 
@@ -77,27 +69,34 @@ end_day <- "2024-06-16"
 
 # Perform the GET request and store the response
 ```
+```{r}
+# json_data <- temperatureprofondeurleman::alplakes_json_20240615
+
+```
 
 
 ```{r}
 #clean data
-hourmin <- json_data$time %>% str_extract("[0-9]{4}$")
-yearmonthday <- json_data$time %>% str_extract("[0-9]{8}")
+# hourmin <- json_data$time %>% str_extract("[0-9]{4}$")
+# yearmonthday <- json_data$time %>% str_extract("[0-9]{8}")
 
-day_hour <- json_data$time %>% as_datetime(format = "%Y%m%d%H%M", tz = "CET")
+# day_hour <- json_data$time %>% purrr::list_c() %>% as_datetime(format = "%Y%m%d%H%M", tz = "CET")
 
-dates_names <- day_hour %>% as.character() %>%
-   str_replace_all(":00$", "")
+day_hour <- json_data$time %>% lubridate::ymd_hms() %>% with_tz("CET")
+dates_names <- day_hour %>% as.character()
 
-dates_names <- ifelse(nchar(dates_names) < max(nchar(dates_names)), paste(dates_names, "00:00"), dates_names)
+# dates_names <- ifelse(nchar(dates_names) < max(nchar(dates_names)), paste(dates_names, "00:00"), dates_names)
 
-initialdata <- json_data$temperature$data %>%
-  as_tibble() %>%
-  `names<-`(dates_names) %>%
-  mutate(profondeur = json_data$depth$data) %>%
-  filter(rowSums(is.na(across(-profondeur))) != ncol(.)-1)
+initialdata <- json_data$variables$temperature$data %>% 
+  map(~`names<-`(.x,dates_names)) %>% 
+  `names<-`(json_data$depth$data) %>%
+  bind_rows(.id = "profondeur") %>%
+  filter(rowSums(is.na(across(-profondeur))) != ncol(.)-1) %>% 
+  mutate(profondeur = as.numeric(profondeur))
+```
 
 
+```{r}
 # create table
 long_show_table <- initialdata %>%
   mutate(across(everything(), \(x) round(x,1))) %>%
@@ -112,18 +111,18 @@ small_show_table <- long_show_table %>%
 
 # per day
 
-unique_days <- dates_names %>% str_remove_all(" .*") %>% unique()
-week_days <- dates_names %>% ymd_hm(tz = "CET") %>% weekdays() %>% unique()
-if("lundi" %in% week_days) {
-  week_days <- week_days %>%
-    str_replace("lundi", "Monday") %>%
-    str_replace("mardi", "Tuesday") %>%
-    str_replace("mercredi", "Wednesday") %>%
-    str_replace("jeudi", "Thursday") %>%
-    str_replace("vendredi", "Friday") %>%
-    str_replace("samedi", "Saturday") %>%
-    str_replace("dimanche", "Sunday")
-}
+unique_days <- dates_names %>% date() %>% unique() %>% as.character()
+week_days <- day_hour %>% weekdays() %>% unique()
+# if("lundi" %in% week_days) {
+#   week_days <- week_days %>%
+#     str_replace("lundi", "Monday") %>%
+#     str_replace("mardi", "Tuesday") %>%
+#     str_replace("mercredi", "Wednesday") %>%
+#     str_replace("jeudi", "Thursday") %>%
+#     str_replace("vendredi", "Friday") %>%
+#     str_replace("samedi", "Saturday") %>%
+#     str_replace("dimanche", "Sunday")
+# }
 
 long_show_table_day <- map(unique_days,
                            ~select(long_show_table, profondeur, contains(.x))) %>%
@@ -143,8 +142,8 @@ create_gt_table <- function(table_profondeur) {
       title = md("**Température de l'eau à Hermance**"),
     ) |>
     tab_spanner_delim(delim = " ") %>%
-    data_color(columns = -profondeur, palette = "Blues")  |>
-    fmt(columns = profondeur,
+    gt::data_color(columns = -profondeur, palette = "Blues")  |>
+    gt::fmt(columns = profondeur,
         fns = \(x) paste(x, "m"))
 }
 
@@ -152,13 +151,13 @@ create_gt_table <- function(table_profondeur) {
 
 ```{r}
 # print data
-small_show_table_day$Saturday |>
+small_show_table_day$samedi |>
   create_gt_table()
 ```
 
 ## example 1 jour long
 ```{r}
-long_show_table_day$Saturday |>
+long_show_table_day$samedi |>
   create_gt_table()
 ```
 

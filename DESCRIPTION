@@ -13,6 +13,7 @@ Imports:
     golem (>= 0.4.1),
     shiny (>= 1.8.1.1)
 Suggests: 
+    httptest2,
     knitr,
     rmarkdown,
     spelling,

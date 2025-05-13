@@ -9,5 +9,6 @@ app_server <- function(input, output, session) {
   mod_print_dt_table_server("samedi_long")
   mod_print_dt_table_server("dimanche_court")
   mod_print_dt_table_server("dimanche_long")
-  mod_print_dt_table_server("semaine")
+  mod_print_dt_table_server("lundi_court")
+  mod_print_dt_table_server("lundi_long")
 }

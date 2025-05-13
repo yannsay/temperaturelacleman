@@ -24,7 +24,7 @@ golem::add_module(name = "print_dt_table", with_test = FALSE) # Name of the modu
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("get_data", with_test = TRUE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources

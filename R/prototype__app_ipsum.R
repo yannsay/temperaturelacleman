@@ -12,19 +12,18 @@ ui <- page_navbar(
   nav_panel(title = "Hermance",
             p("First page content."),
             tabsetPanel(
-              tabPanel("Week-end",
-                       fluidRow(column(6,
-                                       h2("Samedi"),
-                                       mod_print_dt_table_ui("samedi_court"),
-                                       mod_print_dt_table_ui("samedi_long")),
-                                column(6,
-                                       h2("Dimanche"),
-                                       mod_print_dt_table_ui("dimanche_court"),
-                                       mod_print_dt_table_ui("dimanche_long")))
-              ),
-              tabPanel("7 jours",
-                       h2("Semaine"),
-                       mod_print_dt_table_ui("semaine"))
+              tabPanel("Samedi",
+                        h2("Samedi"),
+                        mod_print_dt_table_ui("samedi_court"),
+                        mod_print_dt_table_ui("samedi_long")),
+              tabPanel("Dimanche",
+                       h2("Dimanche"),
+                       mod_print_dt_table_ui("dimanche_court"),
+                       mod_print_dt_table_ui("dimanche_long")),
+              tabPanel("Lundi",
+                       h2("Lundi"),
+                       mod_print_dt_table_ui("lundi_court"),
+                       mod_print_dt_table_ui("lundi_long")),
             )),
   nav_panel(title = "Autres", p("Second page content.")),
   nav_panel(title = "Lisez-moi", p("lalala"))#,
@@ -43,8 +42,8 @@ server <- function(input, output, session) {
   mod_print_dt_table_server("samedi_long")
   mod_print_dt_table_server("dimanche_court")
   mod_print_dt_table_server("dimanche_long")
-  mod_print_dt_table_server("semaine")
-
+  mod_print_dt_table_server("lundi_court")
+  mod_print_dt_table_server("lundi_long")
 
 }
 shinyApp(ui, server)
