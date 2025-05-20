@@ -1,3 +1,4 @@
+[x] new mock api
 [] function to get data
 [] test function to get data
 [] function format data
@@ -9,5 +10,4 @@
 [] ui
 
 
-[] should the call be made everytime someone connect to shiny app or GA that save data every day?
-[] github action to make reque
+[x] should the call be made everytime someone connect to shiny app or GA that save data every day?
