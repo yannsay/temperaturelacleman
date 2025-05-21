@@ -1,4 +1,4 @@
-# UI with added refresh button
+# UI with conditional navigation buttons
 ui <- page_navbar(
   title = "Température du Lac Léman",
   id = "nav",
@@ -10,13 +10,8 @@ ui <- page_navbar(
       id = "date_display",
       div(
         class = "d-flex justify-content-between align-items-center",
-        actionButton("prev_day", "", icon = icon("chevron-left")),
-        textOutput("current_date"),
-        actionButton("next_day", "", icon = icon("chevron-right")),
-        # Add refresh button
-        actionButton("refresh_data", "", icon = icon("sync"),
-                     class = "btn-outline-secondary ms-2",
-                     title = "Rafraîchir les données")
+        # Replace static buttons with a UI output for dynamic rendering
+        uiOutput("navigation_buttons")
       ),
       card_body(
         # Add a loading spinner for when data is being fetched
@@ -107,7 +102,43 @@ server <- function(input, output, session) {
     data_store()$small_show_table_day[[date_to_show]]
   })
 
-  # Format the current date for display
+  # Render dynamic navigation buttons based on current position
+  output$navigation_buttons <- renderUI({
+    req(all_dates(), current_date_idx())
+
+    # Get current index and max index
+    idx <- current_date_idx()
+    max_idx <- length(all_dates())
+
+    # Create UI elements
+    div(
+      class = "d-flex justify-content-between align-items-center w-100",
+
+      # Conditional left/prev button
+      if(idx > 1) {
+        actionButton("prev_day", "", icon = icon("chevron-left"))
+      } else {
+        # Empty div to maintain spacing when button is hidden
+        div(style = "width: 38px;") # Approximate width of a button
+      },
+
+      # Date display (in the middle)
+      div(
+        class = "text-center flex-grow-1",
+        textOutput("current_date")
+      ),
+
+      # Conditional right/next button
+      if(idx < max_idx) {
+        actionButton("next_day", "", icon = icon("chevron-right"))
+      } else {
+        # Empty div to maintain spacing when button is hidden
+        div(style = "width: 38px;") # Approximate width of a button
+      }
+    )
+  })
+
+  # Format the current date for display (now used within the uiOutput)
   output$current_date <- renderText({
     req(all_dates(), current_date_idx())
     format(all_dates()[current_date_idx()], "%A, %B %d, %Y")
@@ -129,26 +160,8 @@ server <- function(input, output, session) {
       current_date_idx(current_date_idx() + 1)
     }
   })
-
-  # Add an option to refresh data manually (optional feature)
-  observeEvent(input$refresh_data, {
-    # Include a message to show data is being fetched
-    message("Refreshing data from alplakes API...")
-
-    # Get fresh data from the API
-    request_data <- get_data_from_alplakes()
-
-    # Process the data
-    clean_alpdata <- clean_alplakes_data(request_data)
-    tables_to_plot <- create_alplakes_tables(clean_alpdata)
-
-    # Update the stored data
-    data_store(tables_to_plot)
-
-    # Reset to first date when refreshing data
-    current_date_idx(1)
-  })
 }
+
 
 # Run the application
 shinyApp(ui, server)
