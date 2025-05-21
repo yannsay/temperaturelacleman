@@ -35,24 +35,11 @@
 build_alplakes_request <- function(day = Sys.Date(),
                                    latitude = "46.303696",
                                    longitude = "6.239853") {
-  # Check if requested date might be unavailable (in current or future week)
-  current_date <- Sys.Date()
-  request_date <- as.Date(day)
-
-  # Find the Sunday that would start the week containing the requested date
-  week_sunday <- request_date - as.numeric(format(request_date, "%w"))
-  current_sunday <- current_date - as.numeric(format(current_date, "%w"))
-
-  # Warn if the date's week starts in current or future week
-  if (week_sunday >= current_sunday) {
-    warning("AlpLakes API likely doesn't have data available for ", day, ". ",
-            "Data appears to be historical only, with no forecasts for the current or future weeks.")
-  }
 
   # Convert CET (Geneva time) to UTC for the API
   # Create POSIXct objects for start and end of day in CET
   start_time_cet <- as.POSIXct(paste(day, "00:00:00"), tz = "CET")
-  end_time_cet <- as.POSIXct(paste(day, "23:00:00"), tz = "CET")
+  end_time_cet <- as.POSIXct(paste(day + 7, "23:00:00"), tz = "CET")
 
   # Convert to UTC
   start_time_utc <- format(start_time_cet, "%Y%m%d%H%M", tz = "UTC")

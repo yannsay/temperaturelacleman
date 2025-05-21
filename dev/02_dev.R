@@ -20,11 +20,11 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "print_dt_table", with_test = FALSE) # Name of the module
+golem::add_module(name = "gt_plot_table", with_test = FALSE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("get_data", with_test = TRUE)
+golem::add_fct("create_gt_alplakes_table", with_test = FALSE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources

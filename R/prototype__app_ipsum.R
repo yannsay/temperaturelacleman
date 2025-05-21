@@ -4,7 +4,6 @@ library(DT)
 library(bslib)
 library(markdown)
 source("R/mod_print_dt_table.R")
-source("R/mod_apropos.R")
 ui <- page_navbar(
   title = "Température du lac Léman",
   # sidebar = color_by,
