@@ -7,13 +7,13 @@
 #' @noRd
 
 clean_alplakes_data <- function(data_from_alplakes) {
-  day_hour <- data_from_alplakes$time %>% lubridate::ymd_hms() %>% with_tz("CET")
-  dates_names <- day_hour %>% as.character() %>% str_replace_all("00:00", "00")
+  day_hour <- data_from_alplakes$time %>% lubridate::ymd_hms() %>% lubridate::with_tz("CET")
+  dates_names <- day_hour %>% as.character() %>% stringr::str_replace_all("00:00", "00")
 
   data_from_alplakes$variables$temperature$data %>%
-    map(~`names<-`(.x,dates_names)) %>% # name each sub list with the day and time
+    purrr::map(~`names<-`(.x,dates_names)) %>% # name each sub list with the day and time
     `names<-`(data_from_alplakes$depth$data) %>% #name the list with the depth
-    bind_rows(.id = "profondeur") %>%
-    filter(rowSums(is.na(across(-profondeur))) != ncol(.)-1) %>%
-    mutate(profondeur = as.numeric(profondeur))
+    dplyr::bind_rows(.id = "profondeur") %>%
+    dplyr::filter(rowSums(is.na(dplyr::across(-profondeur))) != ncol(.)-1) %>%
+    dplyr::mutate(profondeur = as.numeric(profondeur))
 }

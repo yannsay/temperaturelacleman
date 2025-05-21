@@ -8,27 +8,27 @@
 
 create_alplakes_tables <- function(alplakes_clean_data) {
   long_show_table <- alplakes_clean_data %>%
-    mutate(across(everything(), \(x) round(x,1))) %>%
-    select(profondeur, everything()) %>%
-    arrange(profondeur) %>%
-    mutate(profondeur = -profondeur)
+    dplyr::mutate(across(everything(), \(x) round(x,1))) %>%
+    dplyr::select(profondeur, everything()) %>%
+    dplyr::arrange(profondeur) %>%
+    dplyr::mutate(profondeur = -profondeur)
 
   small_show_table <- long_show_table %>%
-    mutate(profondeur = round(profondeur)) %>%
-    filter(!duplicated(profondeur)) %>%
-    filter(profondeur %in% seq(0, -50, by = -5) )
+    dplyr::mutate(profondeur = round(profondeur)) %>%
+    dplyr::filter(!duplicated(profondeur)) %>%
+    dplyr::filter(profondeur %in% seq(0, -50, by = -5) )
 
 
   unique_days <- names(alplakes_clean_data)[-1] %>% lubridate::date() %>% unique() %>% as.character()
-  week_days <- unique_days %>% lubridate::date() %>% weekdays()
+  # week_days <- unique_days %>% lubridate::date() %>% weekdays()
 
-  long_show_table_day <- map(unique_days,
-                             ~select(long_show_table, profondeur, contains(.x))) %>%
-    set_names(week_days)
+  long_show_table_day <- purrr::map(unique_days,
+                             ~dplyr::select(long_show_table, profondeur, tidyr::contains(.x))) %>%
+    purrr::set_names(unique_days)
 
-  small_show_table_day <- map(unique_days,
-                              ~select(small_show_table, profondeur, contains(.x))) %>%
-    set_names(week_days)
+  small_show_table_day <- purrr::map(unique_days,
+                              ~dplyr::select(small_show_table, profondeur, tidyr::contains(.x))) %>%
+    purrr::set_names(unique_days)
 
   return(list(small_show_table = small_show_table,
               long_show_table = long_show_table,

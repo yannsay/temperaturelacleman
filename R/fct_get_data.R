@@ -35,7 +35,7 @@
 build_alplakes_request <- function(day = Sys.Date(),
                                    latitude = "46.303696",
                                    longitude = "6.239853") {
-
+  day <- day %>% lubridate::date()
   # Convert CET (Geneva time) to UTC for the API
   # Create POSIXct objects for start and end of day in CET
   start_time_cet <- as.POSIXct(paste(day, "00:00:00"), tz = "CET")
