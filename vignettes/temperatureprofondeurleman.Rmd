@@ -58,7 +58,7 @@ update_day <- today(tzone = "CET")
 # 
 #   return(json_data)
 # }
-request_data <- get_data_from_alplakes(start_day = "2024-06-10", end_day = "2024-06-16")
+request_data <- get_data_from_alplakes(start_day = "20250520", end_day = "20250524")
 json_data <- request_data |>  convert_json_to_list()
 
 
