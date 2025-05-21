@@ -1,4 +1,3 @@
-# UI with conditional navigation buttons
 ui <- page_navbar(
   title = "Température du Lac Léman",
   id = "nav",
@@ -32,8 +31,7 @@ ui <- page_navbar(
       card_header("A propos"),
       card_body(
         h4("Température du Lac Léman"),
-        p("Cette application affiche les données de température du Lac Léman à différentes profondeurs."),
-        p("Les données montrent comment la température varie avec la profondeur et au fil du temps."),
+        p("Cette application affiche les données de température du Lac Léman vers Hermance à différentes profondeurs."),
         h5("Comment utiliser:"),
         tags$ul(
           tags$li("Consultez le tableau des températures par date"),
@@ -41,7 +39,20 @@ ui <- page_navbar(
           tags$li("Le tableau montre les relevés de température à différentes profondeurs")
         ),
         h5("Remarques:"),
-        p("Les données sont récupérées en temps réel depuis l'API alplakes lors du chargement de l'application.")
+        p("Les données sont récupérées en temps réel depuis l'API alplakes lors du chargement de l'application."),
+        p("Les températures sont des prédictions, elles peuvent changer d'un jour à l'autre."),
+        p("Plus d'informations disponibles sur ",
+          tags$a(
+            href = "https://www.alplakes.eawag.ch/",
+            "AlpLakes",
+            target = "_blank"
+          )),
+        p(),
+        h4("Auteur"),
+        p("",
+          tags$a(href =  "https://yannsay.github.io/portfolio/",
+                 "Yann Say",
+                 target = "_blank"))
       )
     )
   ),

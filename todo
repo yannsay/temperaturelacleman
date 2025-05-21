@@ -1,12 +1,12 @@
 [x] new mock api
-[] function to get data
-[] test function to get data
-[] function format data
+[X] function to get data
+[x] test function to get data
+[x] function format data
 [] test function format data
-[] function create gt tables
+[x] function create gt tables
 [] test gt tables?
 
-[] ui for phones
+[x] ui for phones
 [] ui
 
 
