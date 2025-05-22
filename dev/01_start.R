@@ -19,13 +19,13 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "temperatureprofondeurleman", # The Name of the package containing the App
-  pkg_title = "Température des profondeurs du Lac Léman", # The Title of the package containing the App
-  pkg_description = "Visualisation de la température en profondeur du lac Léman avec les données de l'API Alp Lakes.", # The Description of the package containing the App
+  pkg_name = "temperaturelacleman", # The Name of the package containing the App
+  pkg_title = "Température du Lac Léman", # The Title of the package containing the App
+  pkg_description = "Visualisation de la température en profondeur du lac Léman avec les données de l'API Alplakes.", # The Description of the package containing the App
   author_first_name = "Yann", # Your First Name
   author_last_name = "Say", # Your Last Name
   author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = "https://github.com/yannsay/temperatureprofondeurleman", # The URL of the GitHub Repo (optional),
+  repo_url = "https://github.com/yannsay/temperaturelacleman", # The URL of the GitHub Repo (optional),
   pkg_version = "0.0.0.9000" # The Version of the package containing the App
 )
 

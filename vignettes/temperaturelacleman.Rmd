@@ -1,8 +1,8 @@
 ---
-title: "temperatureprofondeurleman"
+title: "temperaturelacleman"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{temperatureprofondeurleman}
+  %\VignetteIndexEntry{temperaturelacleman}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-# library(temperatureprofondeurleman)
+# library(temperaturelacleman)
 devtools::load_all()
 library(dplyr)
 library(purrr)

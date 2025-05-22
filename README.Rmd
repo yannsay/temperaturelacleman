@@ -13,47 +13,44 @@ knitr::opts_chunk$set(
 )
 ```
 
-# temperatureprofondeurleman
+# temperaturelacleman
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of temperatureprofondeurleman is to ...
+Cette application affiche les données de température du Lac Léman vers Hermance à différentes profondeurs.
+
+Comment utiliser:
+
+- Consultez le tableau des températures par date
+- Utilisez les boutons fléchés pour naviguer entre les jours
+- Le tableau montre les relevés de température à différentes profondeurs
+
+Remarques:
+
+- Les données sont récupérées en temps réel depuis l'API alplakes lors du chargement de l'application.
+- Alplakes API semble générer uniquement les prédictions d'une semaine, c'est à dire, maximum le dimanche de la semaine en cours.
+- Les températures sont des prédictions, elles peuvent changer d'un jour à l'autre.
+- Plus d'informations disponibles sur [AlpLakes](https://www.alplakes.eawag.ch/)
 
 ## Installation
 
-You can install the development version of temperatureprofondeurleman like so:
+You can install the development version of temperaturelacleman like so:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+``` {r, eval=FALSE}
+devtools::install_github("yannsay/temperaturelacleman")
 ```
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
-library(temperatureprofondeurleman)
-## basic example code
+```{r example, eval=FALSE}
+library(temperaturelacleman)
+temperaturelacleman::run_app()
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
 
 ## Code of Conduct
 
-Please note that the temperatureprofondeurleman project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the temperaturelacleman project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

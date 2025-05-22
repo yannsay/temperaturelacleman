@@ -1,13 +1,11 @@
-Package: temperatureprofondeurleman
-Title: Température des profondeurs du Lac Léman
+Package: temperaturelacleman
+Title: Température du Lac Léman
 Version: 0.0.0.9000
-Authors@R: 
-    person("Yann", "Say", , "AUTHOR@MAIL.COM", role = c("cre", "aut"))
-Description: Visualisation de la température en profondeur du lac Léman
-    avec les données de l'API Alp Lakes.
+Authors@R: person('Yann', 'Say', email = 'AUTHOR@MAIL.COM', role = c('cre', 'aut'))
+Description: Visualisation de la température en profondeur du lac Léman avec les données de l'API Alplakes.
 License: MIT + file LICENSE
-URL: https://github.com/yannsay/temperatureprofondeurleman
-BugReports: https://github.com/yannsay/temperatureprofondeurleman/issues
+URL: https://github.com/yannsay/temperaturelacleman
+BugReports: https://github.com/yannsay/temperaturelacleman/issues
 Imports: 
     config (>= 0.3.2),
     golem (>= 0.4.1),

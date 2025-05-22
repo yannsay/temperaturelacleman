@@ -47,7 +47,7 @@ build_alplakes_request <- function(day = Sys.Date(),
 
   # Build the request
   req <- httr2::request("https://alplakes-api.eawag.ch/simulations/depthtime/delft3d-flow/geneva/") |>
-    httr2::req_user_agent("temperatureprofondeurleman (http://my.package.web.site)") |>
+    httr2::req_user_agent("temperaturelacleman (http://my.package.web.site)") |>
     httr2::req_url_path_append(start_time_utc) |>
     httr2::req_url_path_append(end_time_utc) |>
     httr2::req_url_path_append(latitude) |>

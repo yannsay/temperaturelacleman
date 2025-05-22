@@ -36,7 +36,7 @@ golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package
-usethis::use_data_raw(name = "json_call_14062024", open = FALSE)
+usethis::use_data_raw(name = "alplakes_json_20250415.R", open = FALSE)
 
 ## Tests ----
 ## Add one line by test you want to create
@@ -45,7 +45,7 @@ usethis::use_test("app")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("temperatureprofondeurleman")
+usethis::use_vignette("temperaturelacleman")
 devtools::build_vignettes()
 
 ## Code Coverage----
