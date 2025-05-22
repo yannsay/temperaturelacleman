@@ -24,9 +24,9 @@ golem::fill_desc(
   pkg_description = "Visualisation de la température en profondeur du lac Léman avec les données de l'API Alplakes.", # The Description of the package containing the App
   author_first_name = "Yann", # Your First Name
   author_last_name = "Say", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
+  author_email = "yann.say@hotmail.com", # Your Email
   repo_url = "https://github.com/yannsay/temperaturelacleman", # The URL of the GitHub Repo (optional),
-  pkg_version = "0.0.0.9000" # The Version of the package containing the App
+  pkg_version = "1.0.0.0000" # The Version of the package containing the App
 )
 
 ## Set {golem} options ----

@@ -9,38 +9,38 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    page_navbar(
+    bslib::page_navbar(
       title = "Température du Lac Léman",
       id = "nav",
       # Landing page with temperature data
-      nav_panel(
+      bslib::nav_panel(
         title = "Données des températures",
         icon = icon("temperature-half"),
-        card(
+        bslib::card(
           id = "date_display",
           div(
             class = "d-flex justify-content-between align-items-center",
             # Replace static buttons with a UI output for dynamic rendering
             uiOutput("navigation_buttons")
           ),
-          card_body(
+          bslib::card_body(
             # Add a loading spinner for when data is being fetched
             shinycssloaders::withSpinner(
               mod_gt_plot_table_ui("gt_plot_table_1")
             )
           ),
-          card_footer(
+          bslib::card_footer(
             "Utilisez les flèches pour changer de jour"
           )
         )
       ),
       # Info/ReadMe page
-      nav_panel(
+      bslib::nav_panel(
         title = "Info",
         icon = icon("info-circle"),
-        card(
-          card_header("A propos"),
-          card_body(
+        bslib::card(
+          bslib::card_header("A propos"),
+          bslib::card_body(
             h4("Température du Lac Léman"),
             p("Cette application affiche les données de température du Lac Léman vers Hermance à différentes profondeurs."),
             h5("Comment utiliser:"),
@@ -70,7 +70,7 @@ app_ui <- function(request) {
         )
       ),
       # Mobile-friendly styling
-      theme = bs_theme(
+      theme = bslib::bs_theme(
         version = 5,
         bootswatch = "cerulean"
       )

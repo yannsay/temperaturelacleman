@@ -8,8 +8,8 @@
 
 create_alplakes_tables <- function(alplakes_clean_data) {
   long_show_table <- alplakes_clean_data %>%
-    dplyr::mutate(across(everything(), \(x) round(x,1))) %>%
-    dplyr::select(profondeur, everything()) %>%
+    dplyr::mutate(dplyr::across(tidyr::everything(), \(x) round(x,1))) %>%
+    dplyr::select(profondeur, tidyr::everything()) %>%
     dplyr::arrange(profondeur) %>%
     dplyr::mutate(profondeur = -profondeur)
 

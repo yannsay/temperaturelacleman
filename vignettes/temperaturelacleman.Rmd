@@ -15,54 +15,47 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-# library(temperaturelacleman)
-devtools::load_all()
-library(dplyr)
-library(purrr)
-library(stringr)
-library(gt)
-library(lubridate)
-library(httr2)
-inital_update <- "2024-06-14"
-update_day <- today(tzone = "CET")
+library(temperaturelacleman)
 ```
 
-```{r}
+```{r, eval=FALSE}
 # Request the data
-request_data <- get_data_from_alplakes()
+request_data <- temperaturelacleman:::get_data_from_alplakes()
 ```
 
+*Using recorded data for vignette.*
+```{r}
+request_data <- temperaturelacleman::alplakes_call20250415
+```
 
 
 ```{r}
 # Clean data
-clean_alpdata <- clean_alplakes_data(request_data)
+clean_alpdata <- temperaturelacleman:::clean_alplakes_data(request_data)
 ```
-
 
 ```{r}
 # Format the tables
-tables_to_plot <- create_alplakes_tables(clean_alpdata)
+tables_to_plot <- temperaturelacleman:::create_alplakes_tables(clean_alpdata)
 
 ```
+
 ## example 1 jour court
-
-
 ```{r}
 # print data
-tables_to_plot[["small_show_table_day"]]$samedi |>
-  create_gt_alplakes_table()
+tables_to_plot[["small_show_table_day"]][[1]]|>
+  temperaturelacleman:::create_gt_alplakes_table()
 ```
 
 ## example 1 jour long
 ```{r}
-tables_to_plot[["long_show_table_day"]]$samedi |>
-  create_gt_alplakes_table()
+tables_to_plot[["long_show_table_day"]][[1]] |>
+  temperaturelacleman:::create_gt_alplakes_table()
 ```
 
 ## example semaine
 ```{r}
 tables_to_plot[["small_show_table"]] |>
-  create_gt_alplakes_table()
+  temperaturelacleman:::create_gt_alplakes_table()
 ```
 

@@ -1,6 +1,6 @@
-#' Build an API request for AlpLakes lake temperature data
+#' Build an API request for Alplakes lake temperature data
 #'
-#' Creates an httr2 request to the AlpLakes API for retrieving water temperature data
+#' Creates an httr2 request to the Alplakes API for retrieving water temperature data
 #' for Lake Geneva. The function handles conversion from CET (Geneva time) to UTC for the API.
 #'
 #' @param day Character string or Date object representing the date for which to retrieve data
@@ -35,7 +35,7 @@
 build_alplakes_request <- function(day = Sys.Date(),
                                    latitude = "46.303696",
                                    longitude = "6.239853") {
-  day <- day %>% lubridate::date()
+  day <- day |>  lubridate::date()
   # Convert CET (Geneva time) to UTC for the API
   # Create POSIXct objects for start and end of day in CET
   start_time_cet <- as.POSIXct(paste(day, "00:00:00"), tz = "CET")
@@ -47,7 +47,7 @@ build_alplakes_request <- function(day = Sys.Date(),
 
   # Build the request
   req <- httr2::request("https://alplakes-api.eawag.ch/simulations/depthtime/delft3d-flow/geneva/") |>
-    httr2::req_user_agent("temperaturelacleman (http://my.package.web.site)") |>
+    httr2::req_user_agent("temperaturelacleman (https://github.com/yannsay/temperaturelacleman)") |>
     httr2::req_url_path_append(start_time_utc) |>
     httr2::req_url_path_append(end_time_utc) |>
     httr2::req_url_path_append(latitude) |>

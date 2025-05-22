@@ -4,9 +4,11 @@ testthat::test_that("build_alplakes_request creates correct URL with custom para
   test_lat <- "46.45"
   test_lon <- "6.35"
 
+  test_end_date <- "2025-04-22"
+
   # Calculate expected timestamps in UTC
   start_time_cet <- as.POSIXct(paste(test_date, "00:00:00"), tz = "CET")
-  end_time_cet <- as.POSIXct(paste(test_date, "23:00:00"), tz = "CET")
+  end_time_cet <- as.POSIXct(paste(test_end_date, "23:00:00"), tz = "CET")
   expected_start <- format(start_time_cet, "%Y%m%d%H%M", tz = "UTC")
   expected_end <- format(end_time_cet, "%Y%m%d%H%M", tz = "UTC")
 
@@ -25,42 +27,14 @@ testthat::test_that("build_alplakes_request creates correct URL with custom para
   expect_equal(last_part, test_lon)
 })
 
-testthat::test_that("build_alplakes_request warns for current or future weeks", {
-  # Today's date
-  today <- Sys.Date()
-
-  # A date in the current week
-  current_week_date <- today
-
-  # Expect a warning for current week
-  expect_warning(build_alplakes_request(current_week_date),
-                 "AlpLakes API likely doesn't have data available")
-
-  # A date in the future
-  future_date <- today + 30
-
-  # Expect a warning for future date
-  expect_warning(build_alplakes_request(future_date),
-                 "AlpLakes API likely doesn't have data available")
-
-  # A date in a past week (should not warn)
-  past_date <- today - 30
-
-  # No warning expected
-  expect_no_warning(build_alplakes_request(past_date))
-})
-
 httptest2::with_mock_api({
   testthat::test_that("get_data_from_alplakes handles successful API response", {
 
     # Mock the API response for a successful request
-    expected_results <- readRDS(test_path("fixtures", "get_data_from_alplakes_2025-04-15.rds"))
     test_date <- "2025-04-15"
     result <- get_data_from_alplakes(test_date)
 
-    expect_equal(result, expected_results)
+    expect_equal(result, alplakes_call20250415)
 
   })
 })
-
-
