@@ -37,5 +37,5 @@ jobs:
           SERVER: shinyapps.io # server to deploy
         run: |
           rsconnect::setAccountInfo("${{ secrets.RSCONNECT_USER }}", "${{ secrets.RSCONNECT_TOKEN }}", "${{ secrets.RSCONNECT_SECRET }}")
-          rsconnect::deployApp(appName = "${{ env.APPNAME }}", account = "${{ env.ACCOUNT }}", server = "${{ env.SERVER }}",appFiles = c("R/","inst/","data/","NAMESPACE","DESCRIPTION","app.R"))
+          rsconnect::deployApp(appName = "${{ env.APPNAME }}", account = "${{ env.ACCOUNT }}", server = "${{ env.SERVER }}",appFiles = c("R/","inst/","data/","NAMESPACE","DESCRIPTION","app.R"), forceUpdate = TRUE
         shell: Rscript {0}

@@ -45,9 +45,9 @@ app_ui <- function(request) {
             p("Cette application affiche les données de température du Lac Léman vers Hermance à différentes profondeurs."),
             h5("Comment utiliser:"),
             tags$ul(
-              tags$li("Consultez le tableau des températures par date"),
-              tags$li("Utilisez les boutons fléchés pour naviguer entre les jours"),
-              tags$li("Le tableau montre les relevés de température à différentes profondeurs")
+              tags$li("Consultez le tableau des températures par date."),
+              tags$li("Utilisez les boutons fléchés pour naviguer entre les jours."),
+              tags$li("Le tableau montre les relevés de température à différentes profondeurs.")
             ),
             h5("Remarques:"),
             tags$ul(
