@@ -1,11 +1,15 @@
 Package: temperaturelacleman
 Title: Température du Lac Léman
 Version: 1.0.0.0000
-Authors@R: person('Yann', 'Say', email = 'yann.say@hotmail.com', role = c('cre', 'aut'))
-Description: Visualisation de la température en profondeur du lac Léman avec les données de l'API Alplakes.
+Authors@R: 
+    person("Yann", "Say", , "yann.say@hotmail.com", role = c("cre", "aut"))
+Description: Visualisation de la température en profondeur du lac Léman
+    avec les données de l'API Alplakes.
 License: MIT + file LICENSE
 URL: https://github.com/yannsay/temperaturelacleman
 BugReports: https://github.com/yannsay/temperaturelacleman/issues
+Depends: 
+    R (>= 2.10)
 Imports: 
     bslib,
     config (>= 0.3.2),
@@ -15,6 +19,7 @@ Imports:
     httr2,
     lubridate,
     magrittr,
+    pkgload,
     purrr,
     shiny (>= 1.8.1.1),
     shinycssloaders,
@@ -26,11 +31,10 @@ Suggests:
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.3.2
-VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)
