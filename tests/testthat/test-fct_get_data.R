@@ -12,7 +12,7 @@ testthat::test_that("build_alplakes_request creates correct URL with custom para
   expected_start <- format(start_time_cet, "%Y%m%d%H%M", tz = "UTC")
   expected_end <- format(end_time_cet, "%Y%m%d%H%M", tz = "UTC")
 
-  req <- build_alplakes_request(test_date, test_lat, test_lon)
+  req <- build_alplakes_request(test_date, latitude = test_lat, longitude = test_lon)
 
   # Extract URL parts
   url_parts <- strsplit(req$url, "/")[[1]]
@@ -38,3 +38,15 @@ httptest2::with_mock_api({
 
   })
 })
+
+httptest2::with_mock_api({
+  testthat::test_that("get_data_from_alplakes handles unsuccessful API response", {
+
+    test_date <- "2025-05-28"
+    response <- get_data_from_alplakes(test_date)
+
+    expect_equal(response, alplakes_call20250528)
+  })
+})
+
+

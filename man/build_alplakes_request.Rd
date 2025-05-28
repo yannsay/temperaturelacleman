@@ -6,6 +6,7 @@
 \usage{
 build_alplakes_request(
   day = Sys.Date(),
+  end_day = NULL,
   latitude = "46.303696",
   longitude = "6.239853"
 )

@@ -33,13 +33,19 @@
 #'
 #' @export
 build_alplakes_request <- function(day = Sys.Date(),
+                                   end_day = NULL,
                                    latitude = "46.303696",
                                    longitude = "6.239853") {
   day <- day |>  lubridate::date()
   # Convert CET (Geneva time) to UTC for the API
   # Create POSIXct objects for start and end of day in CET
   start_time_cet <- as.POSIXct(paste(day, "00:00:00"), tz = "CET")
-  end_time_cet <- as.POSIXct(paste(day + 7, "23:00:00"), tz = "CET")
+
+  if(is.null(end_day)) {
+    end_time_cet <- as.POSIXct(paste(day + 7, "23:00:00"), tz = "CET")
+  } else {
+    end_time_cet <- as.POSIXct(paste(end_day, "23:00:00"), tz = "CET")
+  }
 
   # Convert to UTC
   start_time_utc <- format(start_time_cet, "%Y%m%d%H%M", tz = "UTC")
@@ -97,32 +103,53 @@ get_data_from_alplakes <- function(day = Sys.Date(),
                                    longitude = "6.239853") {
 
   # Build the request
-  req <- build_alplakes_request(day, latitude, longitude)
+  req <- build_alplakes_request(day, latitude = latitude, longitude = longitude)
 
   # Execute the request
   response <- req |>
     httr2::req_error(is_error = \(resp) FALSE) |>
     httr2::req_perform()
 
-  response |> convert_json_to_list()
+  # if the request works
+  if (response$status_code == 200) {
+    # If error with the new end date returns the call
+    json_response <- response |> convert_json_to_list()
 
-  # # Check if the response contains an error message
-  # content <- httr2::resp_body_json(response)
-  # if (!is.null(content$detail) && grepl("Apologies data is not available", content$detail)) {
-  #   warning("API Error: ", content$detail,
-  #           "\nThe AlpLakes API appears to provide historical data only, organized by weeks starting on Sundays.")
-  #   return(NULL)
+    return(json_response)
   }
 
-#   return(content)
-# }
+  # If error
+  response_message <- response |> httr2::resp_body_json() |>  purrr::pluck("detail")
+
+  if (stringr::str_detect(response_message, "week starting")){
+    error_date <- extract_unavailable_date(response_message)
+    new_end_date <- lubridate::date(error_date) -1
+
+    req2 <- build_alplakes_request(day, end_day = new_end_date, latitude = latitude, longitude = longitude)
+
+    response2 <- req2 |>
+      httr2::req_error(is_error = \(resp) FALSE) |>
+      httr2::req_perform()
+
+    # if the request works
+    if (response2$status_code == 200) {
+      # If error with the new end date returns the call
+      json_response <- response2 |> convert_json_to_list()
+
+      return(json_response)
+    }
+  }
+
+  return(req)
+
+  #if the request has not worked, return the request as it is.
+  }
 
 #' convert_json_to_list
 #'
 #' @param API_response response from get_data_from_alplakes
 #'
-#' @return The API response read with jsonlite::fromJSON. If the call failed, it will return the
-#' data from the 14th of June 2024.
+#' @return The API response read with jsonlite::fromJSON. If the call failed, the http request.
 #'
 #' @export
 
@@ -137,3 +164,16 @@ convert_json_to_list <- function(API_response) {
     return(API_response)
   }
 }
+
+
+# Function to extract the date from the API response
+# If the last date is not available, the API will return:
+# Apologies data is not available for geneva week starting 2025-06-01 00:00:00+00:00
+extract_unavailable_date <- function(response_message) {
+  # response_message <- response |> httr2::resp_body_json() |>  purrr::pluck("detail")
+
+  response_date <- stringr::str_match(response_message, "week starting (\\d{4}-\\d{2}-\\d{2})")[, 2]
+  return(response_date)
+
+}
+

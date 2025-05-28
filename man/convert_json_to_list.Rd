@@ -10,8 +10,7 @@ convert_json_to_list(API_response)
 \item{API_response}{response from get_data_from_alplakes}
 }
 \value{
-The API response read with jsonlite::fromJSON. If the call failed, it will return the
-data from the 14th of June 2024.
+The API response read with jsonlite::fromJSON. If the call failed, the http request.
 }
 \description{
 convert_json_to_list
